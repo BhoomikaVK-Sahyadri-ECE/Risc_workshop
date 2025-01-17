@@ -1,0 +1,247 @@
+
+
+1. ### Instruction: `addi sp, sp, -128`
+
+#### Opcode: `0010011` (7 bits)
+#### Immediate: `-128` (12 bits, two's complement)
+#### Source Register (rs1): `sp` (x2, 5 bits)
+#### Destination Register (rd): `sp` (x2, 5 bits)
+#### Function (funct3): `000` (3 bits)
+
+Breakdown:
+- **Immediate (-128)**: `111111110000` (two's complement)
+- **rs1 (sp = x2)**: `00010`
+- **funct3**: `000`
+- **rd (sp = x2)**: `00010`
+- **Opcode**: `0010011`
+
+Machine Code Breakdown:
+```
+Immediate (12 bits)    | rs1 (5 bits) | funct3 (3 bits) | rd (5 bits) | Opcode (7 bits)
+111111110000           | 00010        | 000             | 00010       | 0010011
+```
+
+---
+
+2. ### Instruction: `sd s0, 112(sp)`
+
+#### Opcode: `0100011` (7 bits)
+#### Immediate: `112` (12 bits, split into two parts: imm[11:5] and imm[4:0])
+#### Source Register (rs2): `s0` (x8, 5 bits)
+#### Base Register (rs1): `sp` (x2, 5 bits)
+#### Function (funct3): `011` (3 bits)
+
+Breakdown:
+- **Immediate (112)**: `000001110000` (split into imm[11:5] = `0000011` and imm[4:0] = `10000`)
+- **rs2 (s0 = x8)**: `01000`
+- **rs1 (sp = x2)**: `00010`
+- **funct3**: `011`
+- **Opcode**: `0100011`
+
+Machine Code Breakdown:
+```
+imm[11:5] (7 bits) | rs2 (5 bits) | rs1 (5 bits) | funct3 (3 bits) | imm[4:0] (5 bits) | Opcode (7 bits)
+0000011            | 01000        | 00010         | 011             | 10000             | 0100011
+```
+
+---
+
+3. ### Instruction: `mv a5, a0`
+
+#### Opcode: `0010011` (7 bits)
+#### Immediate: `0` (12 bits)
+#### Source Register (rs1): `a0` (x10, 5 bits)
+#### Destination Register (rd): `a5` (x15, 5 bits)
+#### Function (funct3): `000` (3 bits)
+
+Breakdown:
+- **Immediate (0)**: `000000000000`
+- **rs1 (a0 = x10)**: `01010`
+- **funct3**: `000`
+- **rd (a5 = x15)**: `01111`
+- **Opcode**: `0010011`
+
+Machine Code Breakdown:
+```
+imm[11:0] (12 bits) | rs1 (5 bits) | funct3 (3 bits) | rd (5 bits) | Opcode (7 bits)
+000000000000        | 01010        | 000             | 01111       | 0010011
+```
+
+---
+
+4. ### Instruction: `ld a0, -32(s0)`
+
+#### Opcode: `0000011` (7 bits)
+#### Immediate: `-32` (12 bits, two's complement)
+#### Source Register (rs1): `s0` (x8, 5 bits)
+#### Destination Register (rd): `a0` (x10, 5 bits)
+#### Function (funct3): `011` (3 bits)
+
+Breakdown:
+- **Immediate (-32)**: `111111000000` (two's complement)
+- **rs1 (s0 = x8)**: `01000`
+- **funct3**: `011`
+- **rd (a0 = x10)**: `01010`
+- **Opcode**: `0000011`
+
+Machine Code Breakdown:
+```
+imm[11:0] (12 bits) | rs1 (5 bits) | funct3 (3 bits) | rd (5 bits) | Opcode (7 bits)
+111111000000        | 01000        | 011             | 01010       | 0000011
+```
+
+---
+
+5. ### Instruction: `lui a5, 0x24`
+
+#### Opcode: `0110111` (7 bits)
+#### Immediate: `0x24` (20 bits)
+#### Destination Register (rd): `a5` (x15, 5 bits)
+
+Breakdown:
+- **Immediate (20 bits)**: `00000000000000000000 00100100`
+- **rd (a5 = x15)**: `01111`
+- **Opcode**: `0110111`
+
+Machine Code Breakdown:
+```
+imm[31:12] (20 bits) | rd (5 bits) | opcode (7 bits)
+000000000000         | 01111       | 0110111
+```
+
+---
+
+6. ### Instruction: `sw a5, -116(s0)`
+
+#### Opcode: `0100011` (7 bits)
+#### Immediate: `-116` (split into 7 bits and 5 bits)
+#### Source Register 1 (rs1): `s0` (x8, 5 bits)
+#### Source Register 2 (rs2): `a5` (x15, 5 bits)
+#### Function (funct3): `010` (3 bits)
+
+Breakdown:
+- **Immediate [11:5] (-116)**: `1111100`
+- **rs2 (a5 = x15)**: `01111`
+- **rs1 (s0 = x8)**: `01000`
+- **funct3**: `010`
+- **Immediate [4:0] (-116)**: `00000`
+- **Opcode**: `0100011`
+
+Machine Code Breakdown:
+```
+imm[11:5] (7 bits) | rs2 (5 bits) | rs1 (5 bits) | funct3 (3 bits) | imm[4:0] (5 bits) | Opcode (7 bits)
+1111100            | 01111        | 01000         | 010             | 00000             | 0100011
+```
+
+
+
+7. **`ld a0, -32(s0)`**  
+   Breakdown:  
+   - **Opcode**: 0000011 (I-type format, load instruction)  
+   - **Funct3**: 011 (Load Double Word)  
+   - **rs1**: 01000 (register `s0`)  
+   - **rd**: 01010 (register `a0`)  
+   - **imm[11:0]**: 111111000000 (immediate offset -32)  
+   - **Machine Code**:  
+   ```
+   imm[11:0]  | rs1  | funct3 | rd   | opcode  
+   111111000000 | 01000 | 011   | 01010 | 0000011  
+   ```
+
+8. **`jal ra, 1038c <Layer_create>`**  
+   Breakdown:  
+   - **Opcode**: 1101111 (J-type format, Jump and Link instruction)  
+   - **rd**: 00001 (register `ra`)  
+   - **imm[20|10:1|11|19:12]**: 100001000000 (target address 1038c)  
+   - **Machine Code**:  
+   ```
+   imm[20|10:1|11|19:12] | rd   | opcode  
+   100001000000        | 00001 | 1101111  
+   ```
+
+9. **`sd a0, -32(s0)`**  
+   Breakdown:  
+   - **Opcode**: 0100011 (S-type format, store instruction)  
+   - **Funct3**: 011 (Store Double Word)  
+   - **rs1**: 01000 (register `s0`)  
+   - **rs2**: 01010 (register `a0`)  
+   - **imm[11:5]**: 1111110 (upper bits of immediate offset)  
+   - **imm[4:0]**: 00000 (lower bits of immediate offset)  
+   - **Machine Code**:  
+   ```
+   imm[11:5]  | rs2  | rs1  | funct3 | imm[4:0]  | opcode  
+   1111110    | 01010| 01000| 011    | 00000     | 0100011  
+   ```
+
+10. **`li a1, 2`**  
+    Breakdown:  
+    - **Opcode**: 0010011 (I-type format, immediate add)  
+    - **Funct3**: 000 (Add Immediate)  
+    - **rs1**: 00000 (register `zero`)  
+    - **rd**: 01011 (register `a1`)  
+    - **imm[11:0]**: 000000000010 (immediate value 2)  
+    - **Machine Code**:  
+    ```
+    imm[11:0]  | rs1  | funct3 | rd   | opcode  
+    000000000010 | 00000 | 000   | 01011 | 0010011  
+    ```
+
+11. **`jal ra, 13ba4`**  
+    Breakdown:  
+    - **Opcode**: 1101111 (J-type format, Jump and Link instruction)  
+    - **rd**: 00001 (register `ra`)  
+    - **imm[20|10:1|11|19:12]**: 000001100101 (target address 13ba4)  
+    - **Machine Code**:  
+    ```
+    imm[20|10:1|11|19:12] | rd   | opcode  
+    000001100101        | 00001 | 1101111  
+    ```
+
+12. **`jal ra, 10740 <Layer_dump>`**  
+    Breakdown:  
+    - **Opcode**: 1101111 (J-type format, Jump and Link instruction)  
+    - **rd**: 00001 (register `ra`)  
+    - **imm[20|10:1|11|19:12]**: 101111101111 (target address 10740)  
+    - **Machine Code**:  
+    ```
+    imm[20|10:1|11|19:12] | rd   | opcode  
+    101111101111        | 00001 | 1101111  
+    ```
+
+13. **`sd s0, 112(sp)`**  
+    Breakdown:  
+    - **Opcode**: 0100011 (S-type format, store instruction)  
+    - **Funct3**: 011 (Store Double Word)  
+    - **rs1**: 01000 (register `sp`)  
+    - **rs2**: 00010 (register `s0`)  
+    - **imm[11:5]**: 0000011 (upper bits of immediate offset)  
+    - **imm[4:0]**: 10000 (lower bits of immediate offset)  
+    - **Machine Code**:  
+    ```
+    imm[11:5]  | rs2  | rs1  | funct3 | imm[4:0]  | opcode  
+    0000011    | 00010| 01000| 011    | 10000     | 0100011  
+    ```
+
+14. **`jal ra, 10740 <Layer_dump>`** (repeated)  
+    Breakdown:  
+    - Same as Instruction 12  
+    - **Machine Code**:  
+    ```
+    imm[20|10:1|11|19:12] | rd   | opcode  
+    101111101111        | 00001 | 1101111  
+    ```
+
+15. **`jal ra, 11024 <Layer_learnOutputs>`**  
+    Breakdown:  
+    - **Opcode**: 1101111 (J-type format, Jump and Link instruction)  
+    - **rd**: 00001 (register `ra`)  
+    - **imm[20|10:1|11|19:12]**: 0001000000 1001011 (target address 11024)  
+    - **Machine Code**:  
+    ```
+    imm[20|10:1|11|19:12] | rd   | opcode  
+    0001000000 1001011  | 00001 | 1101111  
+    ```
+
+
+
+This should now cover all the instructions with their corresponding machine code, broken down similarly to your previous request! Let me know if you need further clarification.
