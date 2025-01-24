@@ -24,6 +24,8 @@ Each instruction progresses through these stages, with results displayed in the 
   - `iiitb_rv32i_tb.v`: Testbench for simulating instructions.
 - **Simulation Tool**: Icarus Verilog.
 - **Waveform Viewer**: GTKWave.
+
+
 ![img alt](image-path)
 
 Steps to simulate:
@@ -59,5 +61,5 @@ Here are some example instructions with the corresponding Program Counter (PC) a
 - **WB_OUT:** `r1 & r3`
 
 ### Instruction 4: `xor r9, r7, r8`
-- **PC:** `0x0000000C`
-- **WB_OUT:** `r7 ^ r8`
+- **PC:** `0x0000000C` 
+- **WB_OUT:** `r7 ^ r8` 
