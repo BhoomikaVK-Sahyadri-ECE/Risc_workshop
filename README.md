@@ -1,4 +1,4 @@
-#Task 3
+#Task 4
 # RV32I Pipelined Processor Simulation and Waveform Analysis
 
 This project demonstrates the implementation and simulation of a 5-stage pipelined RV32I processor, focusing on the execution of basic RISC-V instructions (`add`, `sub`, `and`, `or`, `xor`) and visualizing their behavior through waveform analysis using **Icarus Verilog** and **GTKWave**.
