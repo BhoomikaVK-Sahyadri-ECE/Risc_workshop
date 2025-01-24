@@ -26,12 +26,12 @@ Each instruction progresses through these stages, with results displayed in the 
 - **Simulation Tool**: Icarus Verilog.
 - **Waveform Viewer**: GTKWave.
 
+![Waveform Obtained](https://raw.githubusercontent.com/BhoomikaVK-Sahyadri-ECE/Risc_workshop/4e64a5e739995f8bd097d020fce5567bde0f6e34/Task4/Waveform%20Obtained.png)
 
-![Waveform Obtained](https://github.com/BhoomikaVK-Sahyadri-ECE/Risc_workshop/blob/ad4c83327671fd2c9b6e3716de28e7620fe2aeb5/Waveform%20Obtained.png)
+![Simulation 1](https://raw.githubusercontent.com/BhoomikaVK-Sahyadri-ECE/Risc_workshop/4e64a5e739995f8bd097d020fce5567bde0f6e34/Task4/Simulation1.png)
 
-![Simulation 1](https://github.com/BhoomikaVK-Sahyadri-ECE/Risc_workshop/blob/ad4c83327671fd2c9b6e3716de28e7620fe2aeb5/Simulation1.png)
+![Simulation 2](https://raw.githubusercontent.com/BhoomikaVK-Sahyadri-ECE/Risc_workshop/4e64a5e739995f8bd097d020fce5567bde0f6e34/Task4/Simulation2.png)
 
-![Simulation 2](https://github.com/BhoomikaVK-Sahyadri-ECE/Risc_workshop/blob/ad4c83327671fd2c9b6e3716de28e7620fe2aeb5/Simulation2.png)
 
 
 Steps to simulate:
