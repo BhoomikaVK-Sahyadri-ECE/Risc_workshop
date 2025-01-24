@@ -26,7 +26,9 @@ Each instruction progresses through these stages, with results displayed in the 
 - **Waveform Viewer**: GTKWave.
 
 
-![img alt](image-path)
+![img alt]([https://github.com/BhoomikaVK-Sahyadri-ECE/Risc_workshop/blob/ad4c83327671fd2c9b6e3716de28e7620fe2aeb5/Waveform%20Obtained.png])
+![img alt]([https://github.com/BhoomikaVK-Sahyadri-ECE/Risc_workshop/blob/ad4c83327671fd2c9b6e3716de28e7620fe2aeb5/Simulation1.png])
+![img alt]([https://github.com/BhoomikaVK-Sahyadri-ECE/Risc_workshop/blob/ad4c83327671fd2c9b6e3716de28e7620fe2aeb5/Simulation2.png])
 
 Steps to simulate:
 ```bash
