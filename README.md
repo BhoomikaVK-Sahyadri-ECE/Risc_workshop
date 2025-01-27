@@ -51,6 +51,10 @@ Use a BC547 transistor to control the fan's operation:
 | Collector             | Fan Negative Terminal |
 | Emitter               | GND                |
 
+## Circuit Diagram
+
+![Circuit Diagram](https://github.com/BhoomikaVK-Sahyadri-ECE/Risc_workshop/blob/776124403e1e337011ae8bc2d691dba69f708865/Task5/Circuit%20Diagram.png)
+
 ## Working Explanation
 
 1. **Temperature Sensing**: The LM35 sensor measures the ambient temperature and outputs a corresponding analog voltage (10mV per °C).
