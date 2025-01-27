@@ -1,5 +1,7 @@
 # Task 5
-# Temperature-Controlled Fan Project
+# Temperature-Controlled Fan
+
+## Overview
 
 The Temperature-Controlled Fan project integrates a temperature sensor (LM35) with the CH32V003 RISC-V processor to create an automated fan system. The system monitors ambient temperature in real-time and adjusts the fan's speed accordingly. The LM35 temperature sensor detects the surrounding temperature and sends an analog signal to the CH32V003 processor, which then generates PWM signals to control the fan's speed. This project provides an energy-efficient solution by ensuring the fan operates only when needed and at appropriate speeds.
 
@@ -9,7 +11,6 @@ The Temperature-Controlled Fan project integrates a temperature sensor (LM35) wi
 - **LM35 temperature sensor**
 - **Small DC fan (5V)**
 - **Transistor (e.g., BC547)**
-- **Diode (e.g., 1N4007)**
 - **Resistors (e.g., 10kΩ, 1kΩ)**
 - **Power supply**
 - **Breadboard**
