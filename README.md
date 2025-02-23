@@ -1,66 +1,118 @@
-# Task 5
-# Temperature-Controlled Fan
+# Passenger Counting System
 
 ## Overview
 
-The Temperature-Controlled Fan project integrates a temperature sensor (LM35) with the CH32V003 RISC-V processor to create an automated fan system. The system monitors ambient temperature in real-time and adjusts the fan's speed accordingly. The LM35 temperature sensor detects the surrounding temperature and sends an analog signal to the CH32V003 processor, which then generates PWM signals to control the fan's speed. This project provides an energy-efficient solution by ensuring the fan operates only when needed and at appropriate speeds.
+The **Passenger Counting System** integrates **two ultrasonic sensors** with the **CH32V003 RISC-V processor** to count passengers entering and exiting a space. The system detects movement by analyzing the sequence in which the ultrasonic sensors are triggered.
+
+- If **Sensor 1 detects movement before Sensor 2**, the system **increments** the count (entry).
+- If **Sensor 2 detects movement before Sensor 1**, the system **decrements** the count (exit).
+
+This project is useful for automated **occupancy monitoring** in buses, rooms, and restricted areas.
 
 ## Components Required
 
 - **CH32V003 RISC-V processor**
-- **LM35 temperature sensor**
-- **Small DC fan (5V)**
-- **Transistor (e.g., BC547)**
-- **Resistors (e.g., 10kΩ, 1kΩ)**
-- **Power supply**
+- **2x Ultrasonic sensors (HC-SR04)**
+- **Resistors (e.g., 1kΩ, 330Ω)**
+- **Power supply (3.3V)**
 - **Breadboard**
 - **Jumper wires**
 
 ## Circuit Connection
 
-### Connecting the LM35 Sensor:
-- **VCC (Pin 1)**: Connect to the 3.3V pin of the CH32V003 processor.
-- **OUT (Pin 2)**: Connect to an ADC pin (e.g., A0) on the processor.
-- **GND (Pin 3)**: Connect to the ground (GND) of the processor.
+| Component          | CH32V003 Pin |
+|--------------------|-------------|
+| **Ultrasonic Sensor 1** | |
+| TRIG1            | A1 |
+| ECHO1            | A2 |
+| **Ultrasonic Sensor 2** | |
+| TRIG2            | D1 |
+| ECHO2            | D2 |
+| **Power Supply** | |
+| VCC              | 3.3V |
+| GND              | GND |
 
-### Connecting the DC Fan:
-- **Positive Terminal**: Connect to the 5V power supply via the transistor (see below).
-- **Negative Terminal**: Connect to GND.
+## Working Explanation
 
-Use a BC547 transistor to control the fan's operation:
-- **Base**: Connect to a 1kΩ resistor, which is then connected to the PWM pin (e.g., D2) of the CH32V003 processor.
-- **Collector**: Connect to the negative terminal of the fan.
-- **Emitter**: Connect to GND.
+1. **Detection Process**:
+   - The **HC-SR04 ultrasonic sensors** measure the distance by sending out an ultrasonic pulse and waiting for the echo.
+   - The CH32V003 processor calculates the time taken for the echo and determines the presence of a person.
 
-### Power Supply:
-- Provide **3.3V** to the CH32V003 processor and **5V** for the DC fan.
+2. **Entry & Exit Logic**:
+   - If **Sensor 1 (TRIG1, ECHO1) detects movement first**, followed by **Sensor 2 (TRIG2, ECHO2)**, the system **increases the count**.
+   - If **Sensor 2 detects movement first**, followed by **Sensor 1**, the system **decreases the count**.
 
-### Pinout Diagram
-
-| Component             | CH32V003 Pin       |
-|-----------------------|--------------------|
-| **LM35 Sensor**        |                    |
-| VCC                   | 3.3V (VIN)         |
-| OUT                   | A0 (ADC)           |
-| GND                   | GND                |
-| **DC Fan**             |                    |
-| Positive Terminal     | 5V Power Supply    |
-| Negative Terminal     | Collector (via BC547) |
-| **BC547 Transistor**  |                    |
-| Base                  | D2 (PWM via 1kΩ)   |
-| Collector             | Fan Negative Terminal |
-| Emitter               | GND                |
+3. **Displaying the Count**:
+   - The passenger count is **printed to the terminal (UART serial output)**.
 
 ## Circuit Diagram
 
 ![Circuit Diagram](https://github.com/BhoomikaVK-Sahyadri-ECE/Risc_workshop/blob/776124403e1e337011ae8bc2d691dba69f708865/Task5/Circuit%20Diagram.png)
 
-## Working Explanation
+## Code Implementation
 
-1. **Temperature Sensing**: The LM35 sensor measures the ambient temperature and outputs a corresponding analog voltage (10mV per °C).
-2. **Signal Processing**: The CH32V003 processor reads this analog voltage via its ADC pin (e.g., A0) and calculates the temperature.
-3. **Fan Speed Control**: Based on the temperature value, the processor generates a PWM signal on pin D2, which controls the fan speed via the transistor. A higher temperature results in a higher duty cycle, increasing the fan speed.
-4. **Efficient Operation**: When the temperature drops below a threshold, the fan slows down or stops to save energy.
+### **1. `main.c` (Core Logic)**
+```c
+#include <stdio.h>
+#include "ch32v003_uart.h"
+#include "ch32v003_gpio.h"
+#include "ch32v003_timer.h"
+
+#define TRIG1   GPIO_PIN_A1  // Ultrasonic sensor 1 Trigger pin
+#define ECHO1   GPIO_PIN_A2  // Ultrasonic sensor 1 Echo pin
+#define TRIG2   GPIO_PIN_D1  // Ultrasonic sensor 2 Trigger pin
+#define ECHO2   GPIO_PIN_D2  // Ultrasonic sensor 2 Echo pin
+
+volatile int passenger_count = 0;
+
+// Function to measure distance from ultrasonic sensor
+int get_distance(GPIO_TypeDef *TRIG, GPIO_TypeDef *ECHO) {
+    int pulse_duration = 0;
+    int distance = 0;
+
+    GPIO_Write(TRIG, 1);
+    delay_us(10);
+    GPIO_Write(TRIG, 0);
+
+    while (!GPIO_Read(ECHO));  // Wait for echo high
+    while (GPIO_Read(ECHO)) {  // Measure echo pulse duration
+        pulse_duration++;
+        delay_us(1);
+    }
+
+    distance = pulse_duration / 58;  // Convert to cm
+    return distance;
+}
+
+// Main function
+int main() {
+    UART_Init();  // Initialize UART for serial output
+    GPIO_Init(TRIG1, OUTPUT);
+    GPIO_Init(ECHO1, INPUT);
+    GPIO_Init(TRIG2, OUTPUT);
+    GPIO_Init(ECHO2, INPUT);
+
+    printf("Passenger Counting System Started...\n");
+
+    while (1) {
+        int dist1 = get_distance(TRIG1, ECHO1);
+        int dist2 = get_distance(TRIG2, ECHO2);
+
+        if (dist1 < 20 && dist2 < 20) { // Person detected
+            delay_ms(500);  // Debounce delay
+
+            if (get_distance(TRIG1, ECHO1) < 20 && get_distance(TRIG2, ECHO2) > 20) {
+                passenger_count++;
+                printf("Passenger Entered, Count: %d\n", passenger_count);
+            } 
+            else if (get_distance(TRIG2, ECHO2) < 20 && get_distance(TRIG1, ECHO1) > 20) {
+                passenger_count--;
+                printf("Passenger Exited, Count: %d\n", passenger_count);
+            }
+        }
+    }
+    return 0;
+}
 
 
 # Task 4
